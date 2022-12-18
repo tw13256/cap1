@@ -1,0 +1,36 @@
+{
+  "name": "zoom-clone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^3.1.3",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "init": "^0.1.2",
+    "node-forge": "^1.3.1",
+    "peer": "^0.6.1",
+    "socket.io": "^4.5.4",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yolinlai/Capstone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yolinlai/Capstone/issues"
+  },
+  "homepage": "https://github.com/yolinlai/Capstone#readme"
+}

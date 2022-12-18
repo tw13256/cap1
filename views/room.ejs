@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script>
+    const ROOM_ID = "<%= roomId %>"
+  
+  </script>
+  <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="script.js" defer></script>
+  <!--畫面分享-->
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Document</title>
+  <style>
+    body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    color:rgb(230, 170, 20);
+}
+    
+
+.left {
+    height: 100vh;
+    width: 70%;
+    background:rgba(150, 255, 255, 0.3);
+    box-sizing:border-box;
+    float: left;
+}
+
+.right {
+    height: 100vh;
+    width: 30%;
+    background:rgba(210, 226, 194, 0.251);
+    box-sizing:border-box;
+    float: right;
+}
+    #message-container {
+      position:absolute;
+      top: 55px;
+      right:0;
+      z-index:1;
+      width:30%;
+      height:calc(100% - 45px);
+      overflow-y:scroll;
+      padding:1px;
+      box-sizing:border-box;
+    }
+
+    #message-container div {
+      position:relative;
+      margin:0 0 20px 0;
+      clear:both;
+      height:35px;
+    }
+
+    #message-container div:nth-child(2n) {
+      display:inline-block;
+      margin:5px 0;
+    }
+    #message-container>div>div{
+      display:inline-block;
+    }
+    #show .content{
+      background:rgba(255,255,255,.8);
+      padding:10px;
+      margin-top:15px;
+      margin-left:10px;
+      border-radius:5px;
+      vertical-align:middle;
+    }
+    #send-container {
+      position:absolute;
+      z-index:2;
+      height:45px;
+      width:30%;
+      right:0;
+      bottom:0;
+      margin:0;
+      padding:5px;
+      box-sizing:border-box;
+      background:rgba(110, 80, 80, 0.8);
+      color:rgb(122, 140, 70);
+        }
+    #input div{
+      width:80%;
+      float:left;
+    }
+    #message-input {
+      width:78%;
+      border:none;
+      padding:5px;
+    }
+    #send-button{
+      float:right;
+      height:95%;
+      width:21%;
+      margin:2px 0;
+      border:none;
+      padding:0;
+      background:#369;
+      font-size:16px;
+      color:#fff;
+    }
+
+    #video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 275px);
+      grid-auto-rows: 275px;
+    }
+    
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      
+    }
+    header {
+      position: relative;
+      z-index:3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="collapse bg-dark" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4 class="text-white">About</h4>
+            <p class="text-muted">製作:b10902112賴宥林、B10902125徐欣業、B10902028何昀羲</p>
+            <p class="text-muted">功能:有多人鏡頭、聊天室、下拉式選單可以查看詳細資訊</p>
+          </div>
+          <div class="col-sm-4 offset-md-1 py-4">
+            <h4 class="text-white">Contact</h4>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white">Follow on Twitter</a></li>
+              <li><a href="https://www.facebook.com/profile.php?id=100008014509257" class="text-white">Like on Facebook</a></li>
+              <li><a href="#" class="text-white">Email me</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+          <!--<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>--><!--圖片-->
+          <strong>給我錢錢</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <main>
+      <main>
+        <div class="content">
+
+        <div class="left">
+              <div class="h-100 p-5 text-dark  rounded-3">
+                <div id="video-grid"></div>
+                
+              </div>
+            </div>
+            <div class="right">
+                <ul class="nav nav-pills">
+                  
+                      
+                        <div id="message-container"></div>
+                        <form id="send-container">
+                          <input type="text" id="message-input">
+                          <button type="submit" id="send-button">Send</button>
+                        </form>
+                      
+                </ul>
+              
+            </div>
+          </div>
+      </div>
+          
+        
+      
+      </main>
+  <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
